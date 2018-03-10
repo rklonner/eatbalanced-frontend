@@ -554,7 +554,7 @@ var MenuplanDetailComponent = /** @class */ (function () {
     // use DomSanitizer to secure background-image url
     MenuplanDetailComponent.prototype.getBackgroundImage = function (recipe) {
         //TODO: get baseurl from somewhere else
-        var recipeImageUrl = "http://localhost:8000/" + recipe.image_filename;
+        var recipeImageUrl = "http://backend-eatbalanced.a3c1.starter-us-west-1.openshiftapps.com/" + recipe.image_filename;
         var style = "background-image: url(" + recipeImageUrl + ")";
         return this.sanitizer.bypassSecurityTrustStyle(style);
     };
@@ -788,7 +788,7 @@ var MenuplanComponent = /** @class */ (function () {
     // use DomSanitizer to secure background-image url
     MenuplanComponent.prototype.getBackgroundImage = function (recipe) {
         //TODO: get baseurl from somewhere else
-        var recipeImageUrl = "http://localhost:8000/" + recipe.image_filename;
+        var recipeImageUrl = "http://backend-eatbalanced.a3c1.starter-us-west-1.openshiftapps.com/" + recipe.image_filename;
         var style = "background-image: url(" + recipeImageUrl + ")";
         return this.sanitizer.bypassSecurityTrustStyle(style);
     };
@@ -1095,7 +1095,7 @@ var RecipeDetailComponent = /** @class */ (function () {
     // use DomSanitizer to secure background-image url
     RecipeDetailComponent.prototype.getBackgroundImage = function (recipe) {
         //TODO: get baseurl from somewhere else
-        var recipeImageUrl = "http://localhost:8000/" + recipe.image_filename;
+        var recipeImageUrl = "http://backend-eatbalanced.a3c1.starter-us-west-1.openshiftapps.com/" + recipe.image_filename;
         var style = "background-image: url(" + recipeImageUrl + ")";
         return this.sanitizer.bypassSecurityTrustStyle(style);
     };
