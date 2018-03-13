@@ -142,7 +142,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!--bootstrap navbar-->\n<app-navbar></app-navbar> \n\n<div class=\"container\">\n\t<router-outlet></router-outlet>\n\t<!--<app-messages></app-messages>-->\n</div>\n\n"
+module.exports = "<!--bootstrap navbar-->\n<app-navbar></app-navbar>\n<div class=\"container\">\n\t<router-outlet></router-outlet>\n\t<!--<app-messages></app-messages>-->\n</div>\n\n"
 
 /***/ }),
 
@@ -502,7 +502,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/menuplan-detail/menuplan-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n\n<div \n  class=\"col-lg-6 col-12\"\n  *ngIf=\"recipeMenuplan\">\n  <h4>{{ recipeMenuplan.name }}</h4>\n  <div class=\"recipeListImageContainer\" [style]=\"getBackgroundImage(recipeMenuplan)\"></div>\n  \n  <br>\n  <u>Übersicht:</u>\n  <div class=\"table-responsive\">\n  <table class=\"table\">\n    <thead>\n\t  <tr>\n\t    <th></th>\n\t    <th>Gesamt</th>\n\t    <ng-container *ngFor=\"let userMenuplan of recipeMenuplan.userMenuplan\">\n\t      <th>{{ userMenuplan.name }}</th>\n\t    </ng-container>\n      </tr>\n    </thead>\n    <tbody>\n\t  <tr>\n\t    <td>Kalorien</td>\n\t    <td>{{ recipeMenuplan.calories | multiply:recipeMenuplan.householdIngredientFactor | round }} cal</td>\n\t    <ng-container *ngFor=\"let userMenuplan of recipeMenuplan.userMenuplan\">\n\t      <td>{{ recipeMenuplan.calories | multiply:userMenuplan.ingredientFactor | round }} cal</td>\n\t    </ng-container>\n\t  </tr>\n\t  <tr>\n\t    <td>Anteil</td>\n\t    <td>100 %</td>\n\t    <ng-container *ngFor=\"let userMenuplan of recipeMenuplan.userMenuplan\">\n\t      <td>{{ userMenuplan.householdPercentage | round }} %</td>\n\t    </ng-container>\n\t  </tr>\n    </tbody>\t\n  </table>\n  </div>\n  <br>\n  \n  <u>Zutaten:</u>\n  <div class=\"table-responsive\">\n  <table class=\"table\">\n    <thead>\n\t  <tr>\n\t    <th>Zutaten</th>\n\t    <th>Gesamt</th>\n\t\t<!-- ng-container: In the DOM, its content is rendered as usual, but the tag itself is rendered as an HTML comment-->\n\t    <ng-container *ngFor=\"let userMenuplan of recipeMenuplan.userMenuplan\">\n\t      <th>{{ userMenuplan.name }}</th>\n\t    </ng-container>\n\t  </tr>\n\t</thead>\n    <tbody>\n\t  <tr *ngFor=\"let ingredient of recipeMenuplan['ingredients']\">\n\t    <td>{{ ingredient.name }}</td>\n\t    <td>{{ ingredient.quantity | multiply:recipeMenuplan.householdIngredientFactor | round }} {{ ingredient.unit }}</td>\n\t    <ng-container *ngFor=\"let userMenuplan of recipeMenuplan.userMenuplan\">\n\t      <td>{{ ingredient.quantity | multiply:userMenuplan.ingredientFactor | round }} {{ ingredient.unit }}</td>\n\t    </ng-container>\n\t  </tr>\n\t</tbody>\n  </table>\n  </div>\n  <br>\n  <div>\n\t<u>Zubereitung:</u>\n\t<ol>\n      <li *ngFor=\"let step of recipeMenuplan['preparation']\">\n        <span>{{ step }}</span> \n      </li>\n    </ol>\n  </div>\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"goBack()\">Zurück</button>\n</div>\n\n</div> <!-- class row-->"
+module.exports = "<div class=\"row\">\n\n<div \n  class=\"col-lg-6 col-12\"\n  *ngIf=\"recipeMenuplan\">\n  <h4>{{ recipeMenuplan.name }}</h4>\n  <div class=\"recipeListImageContainer\" [style]=\"getBackgroundImage(recipeMenuplan)\"></div>\n  \n  <br>\n  <u>Übersicht:</u>\n  <div class=\"table-responsive\">\n  <table class=\"table\">\n    <thead>\n\t  <tr>\n\t    <th></th>\n\t    <th>Gesamt</th>\n\t    <ng-container *ngFor=\"let userMenuplan of recipeMenuplan.userMenuplan\">\n\t      <th>{{ userMenuplan.name }}</th>\n\t    </ng-container>\n      </tr>\n    </thead>\n    <tbody>\n\t  <tr>\n\t    <td>Kalorien</td>\n\t    <td>{{ recipeMenuplan.calories | multiply:recipeMenuplan.householdIngredientFactor | round }} kcal</td>\n\t    <ng-container *ngFor=\"let userMenuplan of recipeMenuplan.userMenuplan\">\n\t      <td>{{ recipeMenuplan.calories | multiply:userMenuplan.ingredientFactor | round }} kcal</td>\n\t    </ng-container>\n\t  </tr>\n\t  <tr>\n\t    <td>Anteil</td>\n\t    <td>100 %</td>\n\t    <ng-container *ngFor=\"let userMenuplan of recipeMenuplan.userMenuplan\">\n\t      <td>{{ userMenuplan.householdPercentage | round }} %</td>\n\t    </ng-container>\n\t  </tr>\n    </tbody>\t\n  </table>\n  </div>\n  <br>\n  \n  <u>Zutaten:</u>\n  <div class=\"table-responsive\">\n  <table class=\"table\">\n    <thead>\n\t  <tr>\n\t    <th>Zutaten</th>\n\t    <th>Gesamt</th>\n\t\t<!-- ng-container: In the DOM, its content is rendered as usual, but the tag itself is rendered as an HTML comment-->\n\t    <ng-container *ngFor=\"let userMenuplan of recipeMenuplan.userMenuplan\">\n\t      <th>{{ userMenuplan.name }}</th>\n\t    </ng-container>\n\t  </tr>\n\t</thead>\n    <tbody>\n\t  <tr *ngFor=\"let ingredient of recipeMenuplan['ingredients']\">\n\t    <td>{{ ingredient.name }}</td>\n\t    <td>{{ ingredient.quantity | multiply:recipeMenuplan.householdIngredientFactor | round }} {{ ingredient.unit }}</td>\n\t    <ng-container *ngFor=\"let userMenuplan of recipeMenuplan.userMenuplan\">\n\t      <td>{{ ingredient.quantity | multiply:userMenuplan.ingredientFactor | round }} {{ ingredient.unit }}</td>\n\t    </ng-container>\n\t  </tr>\n\t</tbody>\n  </table>\n  </div>\n  <br>\n  <div>\n\t<u>Zubereitung:</u>\n\t<ol>\n      <li *ngFor=\"let step of recipeMenuplan['preparation']\">\n        <span>{{ step }}</span> \n      </li>\n    </ol>\n  </div>\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"goBack()\">Zurück</button>\n</div>\n\n</div> <!-- class row-->"
 
 /***/ }),
 
@@ -1101,7 +1101,14 @@ var RecipeDetailComponent = /** @class */ (function () {
     };
     // define toast messages
     RecipeDetailComponent.prototype.showInfo = function (msg) {
-        this.toastr.info(msg);
+        var _this = this;
+        //this.toastr.info(msg);
+        this.toastr.info(msg, '', { dismiss: 'controlled' })
+            .then(function (toast) {
+            setTimeout(function () {
+                _this.toastr.dismissToast(toast);
+            }, 1500);
+        });
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
@@ -1388,13 +1395,14 @@ var RecipesComponent = /** @class */ (function () {
     };
     // define toast messages
     RecipesComponent.prototype.showInfo = function (msg) {
-        this.toastr.info(msg);
-        /*this.toastr.info(msg, '', {dismiss: 'controlled'})
-        .then((toast: Toast) => {
-            setTimeout(() => {
-                this.toastr.dismissToast(toast);
+        var _this = this;
+        //this.toastr.info(msg);
+        this.toastr.info(msg, '', { dismiss: 'controlled' })
+            .then(function (toast) {
+            setTimeout(function () {
+                _this.toastr.dismissToast(toast);
             }, 1500);
-        });*/
+        });
     };
     RecipesComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
