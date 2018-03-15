@@ -781,7 +781,6 @@ var MenuplanComponent = /** @class */ (function () {
         this.toogleViewUserStatus = !this.toogleViewUserStatus;
         for (var _i = 0, _a = this.menuplanService.selectedRecipes; _i < _a.length; _i++) {
             var recipe = _a[_i];
-            //recipe.toggleViewUserSelect(this.toogleViewUserStatus);
             recipe.viewUserSelect = this.toogleViewUserStatus;
         }
     };
@@ -1164,6 +1163,7 @@ var RecipeService = /** @class */ (function () {
         this.http = http;
         this.messageService = messageService;
         this.recipesUrl = 'http://backend-eatbalanced.a3c1.starter-us-west-1.openshiftapps.com' + '/api/recipes'; // URL to web api
+        this.recipesSearchUrl = 'http://backend-eatbalanced.a3c1.starter-us-west-1.openshiftapps.com' + '/api/recipesSearch';
     }
     /*  getRecipes(): Observable<Recipe[]> {
         // Todo: send the message _after_ fetching the recipes
@@ -1193,11 +1193,9 @@ var RecipeService = /** @class */ (function () {
     /* GET recipes whose name contains search term */
     RecipeService.prototype.searchRecipes = function (term) {
         var _this = this;
-        if (!term.trim()) {
-            // if not search term, return empty hero array.
-            return Object(__WEBPACK_IMPORTED_MODULE_1_rxjs_observable_of__["a" /* of */])([]);
-        }
-        return this.http.get("api/recipes/?name=" + term).pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["b" /* tap */])(function (_) { return _this.log("found recipes matching \"" + term + "\""); }), Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.handleError('searchRecipes', [])));
+        var url = this.recipesSearchUrl + "/" + term;
+        //console.log("call search url", url);
+        return this.http.get(url).pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["b" /* tap */])(function (_) { return _this.log("found recipes matching \"" + term + "\""); }), Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.handleError('searchRecipes', [])));
     };
     /**
     * Handle Http operation that failed.
@@ -1335,7 +1333,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/recipes/recipes.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h3>Rezepte</h3>\n<div class=\"row\">\n  <div class=\"col-lg-4 col-12\">\n    <div class=\"input-group\">\n      <input type=\"text\" class=\"form-control\" placeholder=\"Rezeptsuche ...\">\n      <span class=\"input-group-btn\">\n        <button class=\"btn btn-secondary\" type=\"button\">Go!</button>\n      </span>\n    </div>\n  </div>\n</div>\n\n<br>\n<br>\n\n<div class=\"row\">\n  <div class=\"col-lg-4 col-12\" style=\"display: block;\"\n       *ngFor=\"let recipe of recipes\">\n\t<div class=\"test\">\n    <h6><b>{{recipe.name}}</b></h6>\n\t<a routerLink=\"/detail/{{recipe.id}}\">\n\t  <div class=\"recipeListImageContainer\" [style]=\"getBackgroundImage(recipe)\"></div>\n\t</a>\n\t<br>\n\t<button type=\"button\" class=\"btn btn-primary btn-sm\" (click)=\"onClickAddToMenuplan(recipe)\"><fa name=\"plus\" style=\"color: white\"></fa> Menüplan</button>\n\t</div>\n\t<br>\n\t<br>\n  </div>\n</div>"
+module.exports = "<h3>Rezepte</h3>\n<div class=\"row\">\n  <div class=\"col-lg-4 col-12\">\n    <div class=\"input-group\">\n      <input type=\"text\" class=\"form-control\" placeholder=\"Rezeptsuche ...\" [(ngModel)]=\"searchString\">\n      <span class=\"input-group-btn\">\n        <button class=\"btn btn-secondary\" type=\"button\" (click)=\"searchRecipes()\">Go!</button>\n      </span>\n    </div>\n  </div>\n</div>\n\n<br>\n<br>\n\n<div class=\"row\">\n  <div class=\"col-lg-4 col-12\" style=\"display: block;\"\n       *ngFor=\"let recipe of recipes\">\n\t<div class=\"test\">\n    <h6><b>{{recipe.name}}</b></h6>\n\t<a routerLink=\"/detail/{{recipe.id}}\">\n\t  <div class=\"recipeListImageContainer\" [style]=\"getBackgroundImage(recipe)\"></div>\n\t</a>\n\t<br>\n\t<button type=\"button\" class=\"btn btn-primary btn-sm\" (click)=\"onClickAddToMenuplan(recipe)\"><fa name=\"plus\" style=\"color: white\"></fa> Menüplan</button>\n\t</div>\n\t<br>\n\t<br>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -1371,6 +1369,7 @@ var RecipesComponent = /** @class */ (function () {
         this.menuplanService = menuplanService;
         this.sanitizer = sanitizer;
         this.toastr = toastr;
+        this.searchString = '';
         this.toastr.setRootViewContainerRef(vcr); // for toast msg
     }
     RecipesComponent.prototype.ngOnInit = function () {
@@ -1380,6 +1379,12 @@ var RecipesComponent = /** @class */ (function () {
         var _this = this;
         this.recipeService.getRecipes()
             .subscribe(function (recipes) { return _this.recipes = recipes; });
+    };
+    RecipesComponent.prototype.searchRecipes = function () {
+        var _this = this;
+        this.recipeService.searchRecipes(this.searchString)
+            .subscribe(function (recipes) { return _this.recipes = recipes; });
+        this.searchString = '';
     };
     // use DomSanitizer to secure background-image url
     RecipesComponent.prototype.getBackgroundImage = function (recipe) {
@@ -1554,31 +1559,7 @@ var ShoppingList = /** @class */ (function () {
             this.items.push(this.itemsContainer[i]);
         }
         // default sort when creating array
-        //this.sortItemsByAttribute('category');
         this.items = this.multisort(this.items, ['category', 'name'], ['ASC', 'ASC']);
-    };
-    ShoppingList.prototype.sortItemsByAttribute = function (attribute, order) {
-        if (order === void 0) { order = 'asc'; }
-        // only sort if there are items
-        if (this.items.length > 0) {
-            // check type of items to use appropriate sort function
-            var type = typeof this.items[0][attribute];
-            if (type === 'number') {
-                //console.log("Sort number")
-                this.items = this.items.sort(function (a, b) { return b[attribute] - a[attribute]; });
-            }
-            else if (type === 'string') {
-                //console.log("Sort string")
-                this.items = this.items.sort(function (a, b) { return a[attribute].localeCompare(b[attribute]); });
-            }
-            else {
-                console.log("Sorting of variable of type", type, " is not supported");
-            }
-            if (order == 'desc') {
-                this.items = this.items.reverse();
-            }
-        }
-        console.log("SORTED ITEMS", this.items);
     };
     // multidimensional sort function, integrated from
     // https://coderwall.com/p/5fu9xw/how-to-sort-multidimensional-array-using-javascript
